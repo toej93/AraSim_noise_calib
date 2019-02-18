@@ -1,0 +1,19 @@
+#/bin/bash
+#PBS -N RayleighA2
+#PBS -l nodes=1:ppn=20
+#PBS -j oe
+#PBS -A PCON0003
+#PBS -m e
+#PBS -l mem=64000MB
+#PBS -l walltime=02:00:00
+
+source /users/PCON0003/cond0068/.bash_profile_pitzer
+
+
+cd /users/PCON0003/cond0068/ARA/AraRoot/3.13/analysis
+
+for i in {0..15}
+do
+    ./make_wf_from_data $i data_A2/event00352* &
+done
+wait

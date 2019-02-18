@@ -1,0 +1,36 @@
+//the neutrinos
+EXPONENT=18 //kotera max
+NNU=50000
+NNU_PASSED=1
+ONLY_PASSED_EVENTS=1 // AraSim throws events until it reaches NNU_PASSED
+//the interaction location of the neutrino
+INTERACTION_MODE=1 // cylindrical volume mode
+POSNU_RADIUS=6000 //radius of allowed interactions
+//the detector geometry and the ice
+number_of_stations=1
+DETECTOR=4 // import settings from AraRoot
+DETECTOR_STATION=3 //mimic station 2
+NOFZ=1 //use a depth dependent index of refraction
+RAYSOL_RANGE=9000 //try to solve the ray if it's closer than 5500 meters
+core_x=10000
+core_y=10000
+//the electronics
+NFOUR=1024 //the number of fourier space samples
+TIMESTEP=5.E-10 // value for 2GHz actual station value
+TRIG_WINDOW=1.6E-7 // 160ns which is actual A2 trigger window
+//the askaryan physics
+SIMULATION_MODE=1 //more accurate time domain Askaryan simulation
+//the noise
+NOISE_WAVEFORM_GENERATE_MODE=0 // generate new noise waveforms for each events
+NOISE_EVENTS=16 // number of pure noise waveforms
+TRIG_ANALYSIS_MODE=0 // 0 = signal + noise, 1 = signal only, 2 = noise only
+TRIG_SCAN_MODE=1
+NOISE=0 //flat thermal noise
+//triggering
+POWERTHRESHOLD=-6.06 // 100Hz global trig rate for 3 out of 16 ARA stations
+V_MIMIC_MODE=0 // 0 : global trig is located center of readout windows/ standard time window
+TRIG_MODE=0 // use vpol, hpol separated trigger mode
+//data output
+DATA_SAVE_MODE=1 // 1: just save the final waveform
+DATA_LIKE_OUTPUT=1 // 1: triggered events only
+FILL_TREE_MODE=2 // 2: save triggered only
