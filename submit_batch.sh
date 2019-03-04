@@ -1,12 +1,13 @@
 #!/bin/bash
 
-#declare -a arr=("2.5" "4.5" "5.3" "5.8")
-declare -a arr=("2.5")
+#declare -a arr=("2.5" "4.5" "5.3" "5.8" "6.5")
+declare -a arr=("5.8" "6.5")
 
 for i in "${arr[@]}"
 do
     AraSimDir='/users/PAS0654/osu8354/ARA/AraSim/trunk/'
     SetUpFile='/users/PAS0654/osu8354/ARA/AraSim/trunk/setup_'$i'_th.txt'
+    #SetUpFile='/users/PAS0654/osu8354/ARA/AraSim/trunk/setup_'$i'_th_stdnoise.txt'
     #OutputDir='/users/PAS0654/osu8354/ARA/AraSim/trunk/outputs/'
     OutputDir='/fs/scratch/PAS0654/jorge/sim_results/'
     export AraSimDir

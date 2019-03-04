@@ -4,7 +4,7 @@
 NFOUR=1024
 
 
-EXPONENT=20
+EXPONENT=18
 NNU=20000 // number of neutrino events
 NNU_PASSED=10 // number of neutrino events that are allowed to pass the trigger
 ONLY_PASSED_EVENTS=0 // 0 (default): AraSim throws NNU events whether or not they pass; 1: AraSim throws events until the number of events that pass the trigger is equal to NNU_PASSED (WARNING: may cause long run times if reasonable values are not chosen)

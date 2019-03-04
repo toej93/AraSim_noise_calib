@@ -4,15 +4,15 @@
 #PBS -A PCON0003
 #PBS -m e
 #PBS -l mem=128000MB
-#PBS -l walltime=06:20:00
+#PBS -l walltime=60:20:00
 
 source /users/PCON0003/cond0068/.bash_profile_pitzer
 #module load modules/au2016
 
 cd $RUN_DIR
 
-j=0
-while [ $j -lt 60 ]
+j=600
+while [ $j -lt 1000 ]
 do
     END=$[$j+40]
     for i in $(seq $j $END) #3785

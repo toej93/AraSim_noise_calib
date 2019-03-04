@@ -165,7 +165,7 @@ void Trigger::SetMeanRmsDiode(Settings *settings1, Detector *detector, Report *r
 
 	
 	myconvlv(v_noise, settings1->DATA_BIN_SIZE, detector->fdiode_real_databin,v_noise_timedomain_diode[i]);
-		//	/*
+	/*
 	vector <double> time_noise;
         vector <double> V_noise_timedomain;
         // save timedomain noise to Report class
@@ -182,7 +182,7 @@ void Trigger::SetMeanRmsDiode(Settings *settings1, Detector *detector, Report *r
 	
 	time_noise.clear();
 	V_noise_timedomain.clear();
-	//	*/
+	*/
 	//myconvlv_new(v_noise, settings1->DATA_BIN_SIZE, detector->fdiode_real,v_noise_timedomain_diode[i]);
 
 	for (int m=0; m<settings1->DATA_BIN_SIZE; m++) {
