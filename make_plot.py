@@ -38,7 +38,7 @@ big_df.to_csv("Combined.csv", header=False, index=False)
 veff_A=read_file("Combined.csv")
 veff_A=veff_A[['freqs','channel','p1','chi2']]
   
-veff_A.to_csv('Rayleigh_ordered.csv', sep=',',index=False)
+veff_A.to_csv('Rayleigh_A2A3.csv', sep=',',index=False)
  #   veff_B.to_csv('veffB_signal.csv', sep='\t',index=False)
 
     

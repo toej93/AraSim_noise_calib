@@ -1882,6 +1882,7 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                    for (int DBS=10; DBS<16; DBS++) {
 //                   for (int DBS=10; DBS<17; DBS++) {
                        DATA_BIN_SIZE_tmp = (int)pow(2., (double)DBS);
+		       //    printf("DBS is %d, DATA_BIN_SIZE_tmp is %d \n", DBS, DATA_BIN_SIZE_tmp);
                        //if (DATA_BIN_SIZE_tmp > max_total_bin) DBS = 15; // come out
                        if (DATA_BIN_SIZE_tmp > max_total_bin) DBS = 16; // come out
 //                       if (DATA_BIN_SIZE_tmp > max_total_bin) DBS = 17; // come out
@@ -2561,7 +2562,7 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                                    // with threshold offset by chs
                                    // for TRIG_ONLY_BH_ON = 1 case, we are only using first 8 chs so don't worry about other chs
                                    if (channel_num-1 < 8) {
-                                       if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
+                                       if ( trigger->Full_window [trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
                                            stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
                                            N_pass++;
                                            if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 0) { // Vpol
@@ -2661,6 +2662,8 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                                //cout<<endl<<"trigger passed at bin "<<stations[i].strings[string_i].antennas[antenna_i].Trig_Pass<<"  passed ch : "<<ch_loop<<" ("<<detector->stations[i].strings[string_i].antennas[antenna_i].type<<"type) Direct dist btw posnu : "<<event->Nu_Interaction[0].posnu.Distance( detector->stations[i].strings[string_i].antennas[antenna_i] )<<" noiseID : "<<stations[i].strings[string_i].antennas[antenna_i].noise_ID[0]<<" ViewAngle : "<<stations[i].strings[string_i].antennas[antenna_i].view_ang[0]*DEGRAD;
 
                                if ( settings1->TRIG_ONLY_LOW_CH_ON==0 ) {
+				 ///cout << "I'm here _____________------------------>" << endl;
+
                                    cout<<endl<<"trigger passed at bin "<<stations[i].strings[string_i].antennas[antenna_i].Trig_Pass<<"  passed ch : "<<ch_loop<<" ("<<detector->stations[i].strings[string_i].antennas[antenna_i].type<<"type) Direct dist btw posnu : "<<event->Nu_Interaction[0].posnu.Distance( detector->stations[i].strings[string_i].antennas[antenna_i] )<<" noiseID : "<<stations[i].strings[string_i].antennas[antenna_i].noise_ID[0];
                                    if (stations[i].strings[string_i].antennas[antenna_i].Likely_Sol != -1) {
                                        cout<<" ViewAngle : "<<stations[i].strings[string_i].antennas[antenna_i].view_ang[0]*DEGRAD<<" LikelyTrigSignal : "<<stations[i].strings[string_i].antennas[antenna_i].Likely_Sol;
@@ -3509,8 +3512,8 @@ int Report::saveTriggeredEvent(Settings *settings1, Detector *detector, Event *e
     
     
       if ( settings1->TRIG_ONLY_LOW_CH_ON==0 ) {
-
-	cout<<endl<<"trigger passed at bin "<<stations[i].strings[string_i].antennas[antenna_i].Trig_Pass<<"  passed ch : "<<trig_j<<" ("<<detector->stations[i].strings[string_i].antennas[antenna_i].type<<"type) Direct dist btw posnu : "<<event->Nu_Interaction[0].posnu.Distance( detector->stations[i].strings[string_i].antennas[antenna_i] )<<" noiseID : "<<stations[i].strings[string_i].antennas[antenna_i].noise_ID[0];
+	//	cout << "I'm here _____________------------------>" << endl;
+	cout<<endl<<"trigger passed at bin "<<stations[i].strings[string_i].antennas[antenna_i].Trig_Pass<<"  passed ch : "<<trig_j<<" ("<<detector->stations[i].strings[string_i].antennas[antenna_i].type<<"type) Direct dist btw posnu : "<<event->Nu_Interaction[0].posnu.Distance( detector->stations[i].strings[string_i].antennas[antenna_i] )<<" noiseID : "<<stations[i].strings[string_i].antennas[antenna_i].noise_ID[0]<<endl;
         
 	if (stations[i].strings[string_i].antennas[antenna_i].Likely_Sol != -1) {
         
@@ -3776,7 +3779,7 @@ void Report::Select_Wave_Convlv_Exchange(Settings *settings1, Trigger *trigger, 
     int BINSIZE = settings1->NFOUR/2;
 
 //    int BINSIZE = detector->stations[StationIndex].NFOUR/2;
-    int bin_value;
+    int bin_value; 
     //vector <double> V_total_forconvlv;   // total time domain waveform (noise + signal)
     
     V_total_forconvlv.clear();
@@ -3793,7 +3796,7 @@ void Report::Select_Wave_Convlv_Exchange(Settings *settings1, Trigger *trigger, 
         else if ( settings1->NOISE_CHANNEL_MODE==1) {
             V_total_forconvlv.push_back( trigger->v_noise_timedomain_ch[ GetChNumFromArbChID(detector,ID,StationIndex,settings1)-1 ][ noise_ID[ (int)( bin_value / settings1->DATA_BIN_SIZE) ] ][ (int)( bin_value % settings1->DATA_BIN_SIZE ) ]  + V[bin] );
         }
-
+ 
         else if ( settings1->NOISE_CHANNEL_MODE==2) {
             if ( (GetChNumFromArbChID(detector,ID,StationIndex,settings1)-1) < 8) {
                 V_total_forconvlv.push_back( trigger->v_noise_timedomain_ch[ GetChNumFromArbChID(detector,ID,StationIndex,settings1)-1 ][ noise_ID[ (int)( bin_value / settings1->DATA_BIN_SIZE) ] ][ (int)( bin_value % settings1->DATA_BIN_SIZE ) ]  + V[bin] );
@@ -3890,7 +3893,7 @@ void Report::Select_Wave_Convlv_Exchange(Settings *settings1, Trigger *trigger, 
 //    trigger->myconvlv( V_total_forconvlv, detector->stations[StationIndex].NFOUR, detector->fdiode_real_double, V_total_forconvlv);
 //
     trigger->myconvlv( V_total_forconvlv, BINSIZE*2, detector->fdiode_real_double, V_total_forconvlv);
-
+    //cout << "IM HERE >>>><><<><>><<><>><<><><>><<><><><><><><<><><><>"<< endl;
     // do replace the part we get from noise + signal
     for (int bin=signalbin1-BINSIZE/2+(trigger->maxt_diode_bin); bin<signalbin1+BINSIZE/2+BINSIZE; bin++) {
         trigger->Full_window[ID][bin] = V_total_forconvlv[bin - signalbin1 + BINSIZE/2];
@@ -4817,7 +4820,9 @@ void Report::GetNoiseWaveforms_ch(Settings *settings1, Detector *detector, doubl
 	  
 	current_phase = noise_phase[k];
 	//	cout << "Rayleigh sigma is ----------> " << GetRayleighFit_databin(0, 2) << endl; 
-	V_tmp = GetRayleighFit_databin(ch, k) * sqrt( (double)settings1->DATA_BIN_SIZE / (double)(settings1->NFOUR/2.) );
+	V_tmp = GetRayleighFit_databin(ch, k) * sqrt( (double)settings1->DATA_BIN_SIZE /(double)(settings1->NFOUR/2) );
+	//	cout<<sqrt( (double)settings1->DATA_BIN_SIZE / (double)(settings1->NFOUR/2.) )<<endl;
+	//printf("DATA_BIN_SIZE is %d, NFOUR is %d \n", settings1->DATA_BIN_SIZE,settings1->NFOUR);
 	Vfft_noise_before.push_back( V_tmp );
 	//	cout << V_tmp << endl;
 	Tools::get_random_rician( 0., 0., V_tmp, current_amplitude, current_phase);    // use real value array value, extra 1/1.177 to make total power same with "before random_rician".
