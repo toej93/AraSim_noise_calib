@@ -1,8 +1,0 @@
-#ifndef ARA_SIM_VERSION_H
-#define ARA_SIM_VERSION_H
-
-#define ARASIM_MAJOR 1
-#define ARASIM_MINOR 1
-#define ARASIM_SUBMINOR 0
-
-#endif //ARA_SIM_VERSION
