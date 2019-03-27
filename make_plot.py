@@ -1,0 +1,48 @@
+# -*- coding: utf-8 -*-
+import numpy as np
+import sys
+#import matplotlib.pyplot as plt
+from pylab import setp
+from matplotlib.pyplot import rcParams
+import csv
+import glob
+import pandas as pd
+
+rcParams['mathtext.default'] = 'regular'
+def read_file(finame):
+    fi = open(finame, 'r')
+    rdr = csv.reader(fi, delimiter=',', skipinitialspace=True)
+    table = []
+    for row in rdr:
+    #    print(row)
+        freqs = float(row[0])
+        channel = int(row[1])
+        p1 = abs(float(row[2]))
+        chi2 = float(row[3])
+        row = {'freqs':freqs, 'channel':channel, 'p1':p1, "chi2":chi2}
+        table.append(row)
+    df=pd.DataFrame(table)
+    df_ordered=df.sort_values(by=['freqs','channel'], ascending=True)
+  #  print(df_ordered)
+    return df_ordered
+    
+path =r'rayleigh_fits_A2A3' # use your path
+allFiles = glob.glob(path + "/*.txt")
+df_list = []
+for file in allFiles:
+    df_list.append(pd.read_csv(file, header=None))
+        
+big_df = pd.concat(df_list, ignore_index=True)
+big_df.to_csv("Combined.csv", header=False, index=False)
+
+veff_A=read_file("Combined.csv")
+veff_A=veff_A[['freqs','channel','p1','chi2']]
+  
+veff_A.to_csv('Rayleigh_ordered.csv', sep=',',index=False)
+ #   veff_B.to_csv('veffB_signal.csv', sep='\t',index=False)
+
+    
+
+        
+        
+        
