@@ -16,6 +16,8 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
+
 #include "TRandom3.h"
 #include "TMath.h"
 #include "TSystem.h"
@@ -23,6 +25,48 @@
 #include "Math/InterpolationTypes.h"
 #include "FFTtools.h"
 
+//Finds the 3rd highest peak square for each polarization and stores it in a root file.
+//This works for data only.
+#include <iostream>
+#include <cstdlib>
+#include <sstream>
+#include <fstream>
+#include <stdio.h>
+#include <memory>
+#include <boost/scoped_ptr.hpp>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <fftw3.h>
+#include <ctime>
+#include "time.h" // for time convert
+
+//ROOT Includes
+#include "TTreeIndex.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TGraph.h"
+#include "TCanvas.h"
+#include "TText.h"
+#include "TStyle.h"
+#include "TGaxis.h"
+#include "TPaveStats.h"
+#include "TH2F.h"
+#include "TH2D.h"
+#include "TMath.h"
+#include "TF1.h"
+#include "TH1D.h"
+#include "TChain.h"
+#include "TString.h"
+#include "TVector3.h"
+#include "TLegend.h"
+#include "TStyle.h"
+
+
+//AraSim Includes
+#ifndef ___CINT___ //shielded from CINT
+#include "Settings.h"
+#endif
 #include <cstdlib>
 
 ClassImp(Report);
@@ -2358,6 +2402,7 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
 				     if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
                                            //cout<<"trigger passed at bin "<<trig_i+trig_bin<<" ch : "<<trig_j<<endl;
                                            //stations[i].strings[(int)((trig_j)/4)].antennas[(int)((trig_j)%4)].Trig_Pass = trig_i+trig_bin;
+
                                            stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
                                            N_pass++;
                                            if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 0) { // Vpol
@@ -2372,6 +2417,7 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                                        }
                                    }
                                    else if ( settings1->NOISE_CHANNEL_MODE==1) {
+
                                        // with threshold offset by chs
                                        if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
                                            //cout<<"trigger passed at bin "<<trig_i+trig_bin<<" ch : "<<trig_j<<endl;
@@ -2457,7 +2503,8 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                                        }
                                    }
                                    else if ( settings1->NOISE_CHANNEL_MODE==1) {
-                                       // with threshold offset by chs
+
+				     // with threshold offset by chs
                                        if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
                                            stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
                                            N_pass++;
@@ -2521,12 +2568,15 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                        //else if (settings1->TRIG_ONLY_BH_ON == 0) {
                        else { // other cases, use all possible chs for trigger analysis
                            trig_bin = 0;
+			   
+
                            while (trig_bin < trig_window_bin ) {
 
 
                                if ( settings1->NOISE_CHANNEL_MODE==0) {
                                    // with threshold offset by chs
                                    if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
+				     
                                        //cout<<"trigger passed at bin "<<trig_i+trig_bin<<" ch : "<<trig_j<<endl;
                                        //stations[i].strings[(int)((trig_j)/4)].antennas[(int)((trig_j)%4)].Trig_Pass = trig_i+trig_bin;
                                        stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
@@ -2543,19 +2593,42 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
                                    }
                                }
                                else if ( settings1->NOISE_CHANNEL_MODE==1) {
-                                   // with threshold offset by chs
-                                   if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
-                                       stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
-                                       N_pass++;
-                                       if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 0) { // Vpol
-                                           N_pass_V++;
-                                       }
-                                       if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 1) { // Hpol
-                                           N_pass_H++;
-                                       }
-                                       if (last_trig_bin < trig_i+trig_bin) last_trig_bin = trig_i+trig_bin;    // added for fixed V_mimic
-                                       trig_bin = trig_window_bin;  // if confirmed this channel passed the trigger, no need to do rest of bins
-                                       Passed_chs.push_back(trig_j);
+				 //cout << "HERE___---___---___--___--___--"<<endl;
+				 //	 if(trig_bin==1 && channel_num==1 && trig_j==1){
+				 /*
+				 bool done;
+				 //string fullfile = "wf_diode_AraSim.png";
+				 //std::ifstream fin(fullfile);
+				 fstream file_png;
+				 file_png.open("wf_diode_AraSim.png", ios_base::out | ios_base::in);	
+				 if (!file_png.is_open()){
+				   cout<<(detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) )<<endl;
+				   double time[300];
+				   for(int samp=0;samp<300;samp++) time[samp]=samp;
+				   TGraph *grPower = new TGraph(300,time,time);
+				   TCanvas *c2 = new TCanvas("","",850,850);
+				   grPower->Draw("");
+				   c2->SaveAs("wf_diode_AraSim.png");
+				   delete c2;
+				   delete grPower;
+				 }
+				 done = false;
+				 */		   
+				 // with threshold offset by chs
+				 if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (detector->GetThres(i, channel_num-1, settings1) * trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) ) {   // if this channel passed the trigger!
+				   //cout << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1]<<endl;
+				   // cout << trigger->rmsdiode_ch[channel_num-1] << endl;
+				   stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
+				   N_pass++;
+				   if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 0) { // Vpol
+				     N_pass_V++;
+				   }
+				   if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 1) { // Hpol
+				     N_pass_H++;
+				   }
+				   if (last_trig_bin < trig_i+trig_bin) last_trig_bin = trig_i+trig_bin;    // added for fixed V_mimic
+				   trig_bin = trig_window_bin;  // if confirmed this channel passed the trigger, no need to do rest of bins
+				   Passed_chs.push_back(trig_j);
                                    }
                                }
                                else if ( settings1->NOISE_CHANNEL_MODE==2) {
@@ -4827,28 +4900,7 @@ void Report::GetNoiseWaveforms_ch(Settings *settings1, Detector *detector, doubl
 	//	cout << V_tmp << endl;
 	Tools::get_random_rician( 0., 0., V_tmp, current_amplitude, current_phase);    // use real value array value, extra 1/1.177 to make total power same with "before random_rician".
 	//1.01334928366 (.5, .5)
-	/*
-	if(settings1->DATA_BIN_SIZE==8192){
-	  if(ch == 1 && k == 102){
-	    cout<< "DATA_BIN_SIZE is " << settings1->DATA_BIN_SIZE << endl;
-	    //Need to plot and fit a histogram of the values for a certain frequency bin<--------NEXT!!!!!
-	    cout << "Rayleigh sigma is ----------> " << GetRayleighFit_databin(ch, k) << endl; 
-	    FILE *fout = fopen("nofft_hist_200MHz_ch1.txt", "a+");
-	    fprintf(fout,"%2.4f, %2.4f, %2.4f \n",current_amplitude, V_tmp, GetRayleighFit_databin(ch, k));
-	    fclose(fout);//close sigmavsfreq.txt file
-	  }
-	}
-
-	else if (settings1->DATA_BIN_SIZE==4096){
-	  if(ch == 1 && k == 51){
-	    cout<< "DATA_BIN_SIZE is " << settings1->DATA_BIN_SIZE << endl;
-	    cout << "Rayleigh sigma is ----------> " << GetRayleighFit_databin(ch, k) << endl; 
-	    FILE *fout = fopen("nofft_hist_200MHz_ch1.txt", "a+");
-	    fprintf(fout,"%2.4f, %2.4f, %2.4f \n",current_amplitude, V_tmp, GetRayleighFit_databin(ch, k));
-	    fclose(fout);//close sigmavsfreq.txt file
-	  }
-	}
-	//	*/
+	
 	// vnoise is currently noise spectrum (before fft, unit : V)
 	//vnoise[2 * k] = sqrt(current_amplitude) * cos(noise_phase[k]);
 	//vnoise[2 * k + 1] = sqrt(current_amplitude) * sin(noise_phase[k]);
@@ -4872,49 +4924,9 @@ void Report::GetNoiseWaveforms_ch(Settings *settings1, Detector *detector, doubl
       
       // now vnoise is time domain waveform
       Tools::realft( vnoise, -1, settings1->DATA_BIN_SIZE);
-      
-      /* if(ch==5){
-	for(int jj=0;jj<settings1->DATA_BIN_SIZE;jj++){
-	  //	  cout << "Vnoise is " << vnoise[jj] << endl;
-	}
-	}*/
-      
-      /*
-      if(ch==5){
-	vector <double> volt_noise;
-	vector <double> time_noise;
-	  
-	for(int jj=0;jj<settings1->DATA_BIN_SIZE;jj++){
-	  volt_noise.push_back(vnoise[jj]);
-	  time_noise.push_back(jj);
-	}
-	TGraph *wf_fftd = new TGraph(settings1->DATA_BIN_SIZE,&time_noise[0],&volt_noise[0]);
-	//	cout << "vec size is "<< wf_fftd->GetN() << endl;
-	TGraph *Waveform_Interpolated = FFTtools::getInterpolatedGraph(wf_fftd, 0.5);
-	//delete wf_fftd;
-	TGraph *Waveform_Padded = FFTtools::padWaveToLength(Waveform_Interpolated, Waveform_Interpolated->GetN()+6000);
-	delete Waveform_Interpolated;
-	TGraph *Waveform_Cropped=FFTtools::cropWave(Waveform_Padded,-256.,256.);
-	delete Waveform_Padded;
-	TGraph *spectrum = makeFFTPlot(Waveform_Cropped);
-	delete Waveform_Cropped;
-
-	TCanvas *cc = new TCanvas("","",650,650);
-	//	cout << spectrum->GetN()<< endl;
-	//	double y_value = spectrum->GetY()[102];
-	//	FILE *fout = fopen("hist_200MHz_ch1.txt", "a+");
-	//	fprintf(fout,"%2.4f  \n",y_value);
-	//	fclose(fout);//close sigmavsfreq.txt file
-	wf_fftd->Draw();	
-	cc->SaveAs("wf_noise_ch1.png");
-	delete spectrum;
-	delete cc;
-      }
-      */
-      
-  
 
     }
+
     
       
     

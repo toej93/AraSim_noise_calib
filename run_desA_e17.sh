@@ -11,8 +11,8 @@ source /users/PCON0003/cond0068/.bash_profile_pitzer
 
 cd $RUN_DIR
 
-j=600
-while [ $j -lt 1000 ]
+j=500
+while [ $j -lt 600 ]
 do
     END=$[$j+40]
     for i in $(seq $j $END) #3785

@@ -1,3 +1,4 @@
+
 #include "Trigger.h"
 #include "Detector.h"
 #include "Settings.h"
@@ -307,9 +308,10 @@ for (int ch=0; ch<num_chs; ch++) {
 
         // get v_noise array (noise voltage in time domain)
 	if (settings1->NOISE == 2){
-	  //	  cout << "DATA_BIN_SIZE is " << settings1->DATA_BIN_SIZE << endl;
-	 report->ReadRayleighFit_A2("./data/Rayleigh_A2A3.csv", settings1, 16);
-	 //	 cout << "HEEEEERE!!!!!!" << endl;
+	 report->ReadRayleighFit_A2("./data/Rayleigh_A2.csv", settings1, 16);
+	}
+	if (settings1->NOISE == 3){
+	  report->ReadRayleighFit_A2("./data/Rayleigh_A3.csv", settings1, 16);
 	}
         report->GetNoiseWaveforms_ch(settings1, detector, V_noise_freqbin_ch[ch], v_noise, ch);
 
@@ -445,7 +447,10 @@ for (int ch=0; ch<num_chs; ch++) {
 
         // get v_noise array (noise voltage in time domain)
 	if (settings1->NOISE == 2){
-	  report-> ReadRayleighFit_A2("./data/Rayleigh_A2A3.csv", settings1, 16);
+	 report->ReadRayleighFit_A2("./data/Rayleigh_A2.csv", settings1, 16);
+	}
+	if (settings1->NOISE == 3){
+	  report->ReadRayleighFit_A2("./data/Rayleigh_A3.csv", settings1, 16);
 	}
         report->GetNoiseWaveforms_ch(settings1, detector, V_noise_freqbin_ch[ch], v_noise, ch);
         // do normal time ordering (not sure if this is necessary)
@@ -631,7 +636,10 @@ if (settings1->TRIG_ANALYSIS_MODE != 1 ) {
 
             // get v_noise array (noise voltage in time domain)
 	  if (settings1->NOISE == 2){
-	    report-> ReadRayleighFit_A2("./data/Rayleigh_A2A3.csv", settings1, 16);
+	    report->ReadRayleighFit_A2("./data/Rayleigh_A2.csv", settings1, 16);
+	  }
+	  if (settings1->NOISE == 3){
+	    report->ReadRayleighFit_A2("./data/Rayleigh_A3.csv", settings1, 16);
 	  }
 	  report->GetNoiseWaveforms_ch(settings1, detector, V_noise_freqbin_ch[ch], v_noise, ch);
 		
@@ -713,7 +721,10 @@ if (settings1->TRIG_ANALYSIS_MODE != 1 ) {
 
             // get v_noise array (noise voltage in time domain)
 	  if (settings1->NOISE == 2){
-	    report-> ReadRayleighFit_A2("./data/Rayleigh_A2A3.csv", settings1, 16);
+	    report->ReadRayleighFit_A2("./data/Rayleigh_A2.csv", settings1, 16);
+	  }
+	  if (settings1->NOISE == 3){
+	    report->ReadRayleighFit_A2("./data/Rayleigh_A3.csv", settings1, 16);
 	  }
 	  report->GetNoiseWaveforms_ch(settings1, detector, V_noise_freqbin_ch[ch], v_noise, ch);
 		

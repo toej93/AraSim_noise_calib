@@ -6,7 +6,7 @@ NFOUR=1024
 
 EXPONENT=18
 NNU=10000 // number of neutrino events
-NNU_PASSED=10 // number of neutrino events that are allowed to pass the trigger
+NNU_PASSED=500 // number of neutrino events that are allowed to pass the trigger
 ONLY_PASSED_EVENTS=0 // 0 (default): AraSim throws NNU events whether or not they pass; 1: AraSim throws events until the number of events that pass the trigger is equal to NNU_PASSED (WARNING: may cause long run times if reasonable values are not chosen)
 NOISE_WAVEFORM_GENERATE_MODE=0 // generate new noise waveforms for each events
 NOISE_EVENTS=16 // number of pure noise waveforms
