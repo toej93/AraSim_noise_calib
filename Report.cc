@@ -4876,7 +4876,7 @@ void Report::GetNoiseWaveforms_ch(Settings *settings1, Detector *detector, doubl
 
 
     
-    else if (settings1->NOISE == 2) {    // NOISE == 2 : use Rayleigh dist. fit from A2/A3 data
+    else if (settings1->NOISE == 2 || settings1->NOISE == 3 ) {    // NOISE == 2/3 : use Rayleigh dist. fit from A2/A3 data
 
 
       Vfft_noise_after.clear();  // remove previous Vfft_noise values
@@ -4918,7 +4918,7 @@ void Report::GetNoiseWaveforms_ch(Settings *settings1, Detector *detector, doubl
 
         }
 	
-      Rayleigh_TB_databin_ch.clear();
+      Rayleigh_TB_databin_ch.clear();//Keep same name to avoid introduction of new variables
       Rayleigh_TB_databin_ch.swap(empty_v);
 
       
@@ -5701,7 +5701,7 @@ vector<double> Report::getHitTimesVectorHpol(Detector *detector, int station_i){
 }
 
 
-void Report::ReadRayleighFit_A2(string filename, Settings *settings1, int ch_no) {    // will read Rayleigh fit result from the file
+void Report::ReadRayleighFit(string filename, Settings *settings1, int ch_no) {    // will read Rayleigh fit result from the file
 
     ifstream Rayleigh_file( filename.c_str() );
     int freq_step_max = 60;

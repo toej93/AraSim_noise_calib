@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -a arr=("4.5" "5.0" "5.3" "5.8" "6.0" "6.2" "6.5")
-#declare -a arr=("5.8" "6.2" "6.5")
+#declare -a arr=("4.5" "5.0" "5.3" "5.8" "6.0" "6.2" "6.5")
+declare -a arr=("6.0" "6.2" "6.5")
 
 for i in "${arr[@]}"
 do
@@ -27,7 +27,7 @@ do
     
     #	read -p "Press Enter to run! " RUNNOW
     
-    qsub -v INPUTFILE=$SetUpFile,RUN_DIR=$AraSimDir,OUTPUT_DIR=$OutputDir -N AraSim_noise_"$i" run_desA_e17.sh
+    qsub -v INPUTFILE=$SetUpFile,RUN_DIR=$AraSimDir,OUTPUT_DIR=$OutputDir -N AraSim_noise_"$i" run_desA_e17_owens.sh
     
     
     #sed -i '$ a RAY_TRACE_ICE_MODEL_PARAMS=2' des* #append to last line

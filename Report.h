@@ -279,7 +279,7 @@ class Report {
 
         void ApplyElect_Tdomain_FirstTwo(double freq0, double freq1, Detector *detector, double &vm_bin0, double &vm_bin1);
 
-	void ReadRayleighFit_A2(string filename, Settings *settings1, int ch_no);
+	void ReadRayleighFit(string filename, Settings *settings1, int ch_no);
 
 
 
@@ -369,7 +369,7 @@ class Report {
         double init_T; // locate zero time at the middle and give random time shift (for interpolated waveforms)
         vector < vector <double> > Rayleigh_TB_databin_ch;   // RFCM gain measured value for the TestBed (for each ch)
 	vector < vector <double> > empty_v;
-	double GetRayleighFit_databin(int ch, int bin) { return Rayleigh_TB_databin_ch[ch][bin]; }
+  double GetRayleighFit_databin(int ch, int bin) { return Rayleigh_TB_databin_ch[ch][bin]; }//Keeping same name to avoid introducing new variables
 	
         ClassDef(Report,1);
 

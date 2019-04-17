@@ -22,27 +22,10 @@ def read_file(finame):
         row = {'freqs':freqs, 'channel':channel, 'p1':p1, "chi2":chi2}
         table.append(row)
     df=pd.DataFrame(table)
-    df_ordered=df.sort_values(by=['freqs','channel'], ascending=True)
-  #  print(df_ordered)
-    return df_ordered
-    
-path =r'rayleigh_fits_A2A3' # use your path
-allFiles = glob.glob(path + "/*.txt")
-df_list = []
-for file in allFiles:
-    df_list.append(pd.read_csv(file, header=None))
-        
-big_df = pd.concat(df_list, ignore_index=True)
-big_df.to_csv("Combined.csv", header=False, index=False)
+    return df
 
-veff_A=read_file("Combined.csv")
-veff_A=veff_A[['freqs','channel','p1','chi2']]
-  
-veff_A.to_csv('Rayleigh_A3.csv', sep=',',index=False)
- #   veff_B.to_csv('veffB_signal.csv', sep='\t',index=False)
+veff_A=read_file("Rayleigh_A2.csv")
+veff_A.head(5)  
+#veff_A.to_csv('Rayleigh_A3.csv', sep=',',index=False)
 
     
-
-        
-        
-        
