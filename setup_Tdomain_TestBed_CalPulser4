@@ -12,7 +12,7 @@ TRIG_ANALYSIS_MODE=0 // signal+noise
 //POWERTHRESHOLD=-0.000001 // force to trigger
 POWERTHRESHOLD=-6.06 // 100Hz global trig rate for 3 out of 16 ARA stations
 
-TRIG_MODE=0 // trigger don't distinguish Vpol and Hpol
+TRIG_MODE=1 // trigger don't distinguish Vpol and Hpol
 N_TRIG=3 // global trigger = 3 or more channels pass threshold
 
 TRIG_ONLY_BH_ON=1 // only for TestBed mode, triggered by borehole channels only

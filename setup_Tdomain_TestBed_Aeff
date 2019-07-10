@@ -15,7 +15,7 @@ TRIG_ANALYSIS_MODE=1 // there's only pure signal
 
 //POWERTHRESHOLD=-0.000001 // force to trigger, below TRIG_THRES_MODE=1 will overwrite this low threshold value
 
-TRIG_MODE=0 // trigger don't distinguish Vpol and Hpol
+TRIG_MODE=1 // trigger don't distinguish Vpol and Hpol
 DETECTOR_STATION=2
 N_TRIG=3 // global trigger = 3 or more channels pass threshold
 

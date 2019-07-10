@@ -33,7 +33,7 @@ SECONDARIES=0
 FILL_TREE_MODE=2
 
 
-TRIG_MODE=0 // use vpol, hpol separated trigger mode. by default N_TRIG_V=3, N_TRIG_H=3. You can change this values
+TRIG_MODE=1 // use vpol, hpol separated trigger mode. by default N_TRIG_V=3, N_TRIG_H=3. You can change this values
 //N_TRIG_V=4
 //N_TRIG_H=4
 

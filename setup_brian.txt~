@@ -29,7 +29,7 @@ NOISE=0 //flat thermal noise
 //triggering
 POWERTHRESHOLD=-6.06 // 100Hz global trig rate for 3 out of 16 ARA stations
 V_MIMIC_MODE=0 // 0 : global trig is located center of readout windows/ standard time window
-TRIG_MODE=0 // use vpol, hpol separated trigger mode
+TRIG_MODE=1 // use vpol, hpol separated trigger mode
 //data output
 DATA_SAVE_MODE=1 // 1: just save the final waveform
 DATA_LIKE_OUTPUT=1 // 1: triggered events only
