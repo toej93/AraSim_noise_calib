@@ -87,4 +87,4 @@ trigger class for later use
 
 ANTENNA_MODE=0
 APPLY_NOISE_FIGURE=0
-//ALL_ANT_V_ON=0
+ALL_ANT_V_ON=0

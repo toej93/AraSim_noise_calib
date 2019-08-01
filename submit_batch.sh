@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#declare -a arr=("4.5" "5.0" "5.3" "5.8" "6.0" "6.2" "6.5")
-declare -a arr=("4.5")
+declare -a arr=("4.5" "5.0" "5.3" "5.8")
+#declare -a arr=("4.5")
 
 for i in "${arr[@]}"
 do

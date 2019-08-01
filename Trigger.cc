@@ -365,16 +365,14 @@ for (int ch=0; ch<num_chs; ch++) {
     }   // get rmsdiode with 1000 noisewaveforms
 }
     cerr<< "100% done"<<endl;
-
-    
-
-
+    double rmsdiode_ch_fixed[16]={2.59176e-14,4.32818e-14,1.13644e-13,3.31724e-14,6.98278e-14,2.98466e-14,1.10119e-13,6.28753e-14,8.8548e-14,2.79944e-14,3.39428e-14,5.86829e-14,3.98562e-14,4.60079e-14,4.39133e-14,1.59158e-19};
     cout << "From pure noise waveforms, diode responses" << "\n";
-for (int ch=0; ch<num_chs; ch++) {
-    rmsdiode_ch[ch]=sqrt(rmsdiode_ch[ch]);
-    rmsvoltage_ch[ch]=sqrt(rmsvoltage_ch[ch]);
-    cout << "For ch"<<ch<<" mean, rms diode are " << meandiode_ch[ch] << " " << rmsdiode_ch[ch] << " rms voltage is "<<rmsvoltage_ch[ch]<<"\n";
-}
+    for (int ch=0; ch<num_chs; ch++) {
+      //rmsdiode_ch[ch]=sqrt(rmsdiode_ch[ch]);
+      rmsdiode_ch[ch]=rmsdiode_ch_fixed[ch];
+      rmsvoltage_ch[ch]=sqrt(rmsvoltage_ch[ch]);
+      cout << "For ch"<<ch<<" mean, rms diode are " << meandiode_ch[ch] << " " << rmsdiode_ch[ch] << " rms voltage is "<<rmsvoltage_ch[ch]<<"\n";
+    }
 
     cout<<" DATA_BIN_SIZE : "<<settings1->DATA_BIN_SIZE<<"\n";
 
