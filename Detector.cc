@@ -5315,7 +5315,7 @@ double Detector::GetThres( int StationID, int ch, Settings *settings1 ){
 }
 
 double Detector::GetThresfromGaus(double sigma, Settings *settings1){
-  return settings1->POWERTHRESHOLD*abs(gRandom->Gaus(1, sigma));
+  return settings1->POWERTHRESHOLD+abs(gRandom->Gaus(0, sigma));
 }
 
 
