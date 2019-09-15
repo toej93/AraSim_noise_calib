@@ -1032,8 +1032,11 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
         // read threshold offset for chs file!!
         ReadThresOffset_TestBed("./data/threshold_offset.csv", settings1);// only TestBed for now
 	// read threshold values for chs file
-	ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
+	      ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
         // read system temperature for chs file!!
+        if(settings1->DETECTOR_STATION==2){
+          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+        }
 	cout << "check read testbed temp1" << endl;
         if (settings1->NOISE_CHANNEL_MODE != 0) {
 
@@ -1517,9 +1520,11 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
         // read threshold offset for chs file!!
         ReadThresOffset_TestBed("./data/threshold_offset.csv", settings1);// only TestBed for now
 	// read threshold values for chs file
-	ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
+	     ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
         // read system temperature for chs file!!
-
+        if(settings1->DETECTOR_STATION==2){
+          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+        }
 	cout << "check read temp testbed 2" << endl;
        if (settings1->NOISE_CHANNEL_MODE != 0) {
             ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
@@ -1834,8 +1839,11 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
             // read threshold offset for chs file!!
             ReadThresOffset_TestBed("./data/threshold_offset.csv", settings1);// only TestBed for now
 	    // read threshold values for chs file
-	    ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
+	         ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
             // read system temperature for chs file!!
+            if(settings1->DETECTOR_STATION==2){
+              ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+            }
 	cout << "check read temp testbed 3" << endl;
             if (settings1->NOISE_CHANNEL_MODE!=0) {
                 ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
@@ -2147,6 +2155,9 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 	      ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
 	      // read system temperature for chs file!!
 	      cout << "check read temp testbed 4" << endl;
+        if(settings1->DETECTOR_STATION==2){
+          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+        }
 	      if (settings1->NOISE_CHANNEL_MODE!=0) {
 		ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
 	      }
@@ -4634,6 +4645,36 @@ inline void Detector::ReadThres_TestBed( string filename, Settings *settings1){
   }
 }
 
+inline void Detector::ReadThres_A2_A3( string filename, Settings *settings1){
+  if (settings1->TRIG_THRES_MODE != 1){
+    for (int N=0; N<16; N++) {
+      Thres_A2_A3_ch.push_back(settings1->POWERTHRESHOLD);
+      cout<<"Thres ch"<<N<<" : "<<Thres_A2_A3_ch[N]<<endl;
+    }
+  }
+  else if (settings1->TRIG_THRES_MODE == 1){
+    ifstream Thres( filename.c_str() );
+
+    string line;
+
+    int N=0;
+
+    if ( Thres.is_open() ) {
+      while (Thres.good() ) {
+
+	getline (Thres, line);
+
+	Thres_A2_A3_ch.push_back( atof( line.c_str() ) );
+	cout<<"Thres ch" << N << " : " << Thres_A2_A3_ch[N] << endl;
+
+	N++;
+
+      }
+      Thres.close();
+    }
+  }
+}
+
 
 inline void Detector::ReadThresOffset_TestBed(string filename, Settings *settings1) {    // will return gain offset (unit in voltage) for different chs
 
@@ -5307,6 +5348,11 @@ double Detector::GetThres( int StationID, int ch, Settings *settings1 ){
   else if ( settings1->TRIG_ONLY_LOW_CH_ON==1 ) { // if only triggered by bottom chs with TB info
     //    cout << "TBChannel:Threshold: " << ch << " : " << Thres_TB_ch[ch] << endl;
     return Thres_TB_ch[ch];
+  }
+
+  else if ( settings1->DETECTOR_STATION==2 ) { // if only triggered by bottom chs with TB info
+    //    cout << "TBChannel:Threshold: " << ch << " : " << Thres_TB_ch[ch] << endl;
+    return Thres_A2_A3_ch[ch];
   }
 
   else {

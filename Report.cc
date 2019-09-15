@@ -2366,11 +2366,9 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
 	  // avoid really long trig_window_bin case (change trig_window to check upto max_total_bin)
 	  if (max_total_bin - trig_window_bin <= trig_i) trig_window_bin = max_total_bin - trig_i -1;
 
-    double powerthreshold_var=detector->GetThresfromGaus(0.4, settings1);
 
-	  //while (trig_i < settings1->DATA_BIN_SIZE - trig_window_bin ) {
+    //while (trig_i < settings1->DATA_BIN_SIZE - trig_window_bin ) {
 	  while (trig_i < max_total_bin - trig_window_bin ) {
-
 	    N_pass = 0;
 	    N_pass_V = 0;
 	    N_pass_H = 0;
@@ -2601,10 +2599,13 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
 		    }
 		  }
 		  else if ( settings1->NOISE_CHANNEL_MODE==1) {
-
+        double powerthreshold_var=detector->GetThresfromGaus(settings1->SIGMA_THRES, settings1);
+        // double powerthreshold_var=detector->GetThresfromGaus(detector->GetThres(i, channel_num-1,settings1), settings1);
+        detector->GetThres(i, channel_num-1,settings1);
+        printf("Channel:%i, thres: \n",channel_num-1);
 		    if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (powerthreshold_var*trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) )  {   // if this channel passed the trigger!
 		      //cout << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1]<<endl;
-		      // cout << "HEREREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!"<<endl;
+		      //cout << "HEREREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!"<<endl;
 
 		      //  cout<<"trigger passed:" << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1] <<" ch : "<<trig_j<<endl;
 		      // cout << trigger->rmsdiode_ch[channel_num-1] << endl;

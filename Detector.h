@@ -273,6 +273,9 @@ class Detector {
         void ReadThres_TestBed(string filename, Settings *settings1);
         vector <double> Thres_TB_ch;   // Threshold values for the TestBed chs
 
+        void ReadThres_A2_A3(string filename, Settings *settings1);
+        vector <double> Thres_A2_A3_ch;
+
         void ReadTemp_TestBed(string filename, Settings *settings1);
         //vector <double> Temp_TB_ch;   // constant gain offset for the TestBed chs
 

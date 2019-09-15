@@ -1,0 +1,9 @@
+#!/bin/bash
+declare -a var_name
+
+for i in $(seq 5.7 0.02 5.9)
+do
+    var_name[$i]=$i
+  #cp setup_4.5_th.txt setup_"$i"_th.txt
+  #sed -i 's/POWERTHRESHOLD=-4.5/POWERTHRESHOLD=-'$i'/g' setup_"$i"_th.txt
+done
