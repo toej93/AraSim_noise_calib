@@ -2599,10 +2599,7 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
 		    }
 		  }
 		  else if ( settings1->NOISE_CHANNEL_MODE==1) {
-        double powerthreshold_var=detector->GetThresfromGaus(settings1->SIGMA_THRES, settings1);
-        // double powerthreshold_var=detector->GetThresfromGaus(detector->GetThres(i, channel_num-1,settings1), settings1);
-        detector->GetThres(i, channel_num-1,settings1);
-        printf("Channel:%i, thres: \n",channel_num-1);
+        double powerthreshold_var=detector->GetThresfromGaus(settings1, channel_num-1);
 		    if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (powerthreshold_var*trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) )  {   // if this channel passed the trigger!
 		      //cout << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1]<<endl;
 		      //cout << "HEREREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!"<<endl;

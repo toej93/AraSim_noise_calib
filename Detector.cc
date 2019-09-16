@@ -1034,9 +1034,6 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 	// read threshold values for chs file
 	      ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
         // read system temperature for chs file!!
-        if(settings1->DETECTOR_STATION==2){
-          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
-        }
 	cout << "check read testbed temp1" << endl;
         if (settings1->NOISE_CHANNEL_MODE != 0) {
 
@@ -1044,7 +1041,12 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 
         }
         // read total elec. chain response file!!
+        if(settings1->DETECTOR_STATION==2){
+          cout << "Reading variable thresholds for A2"<<endl;
+          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+        }
         cout<<"start read elect chain"<<endl;
+
         if(settings1->CUSTOM_ELECTRONICS==0){
             //read the standard ARA electronics
             cout<<"     Reading standard ARA electronics response"<<endl;
@@ -1522,15 +1524,19 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 	// read threshold values for chs file
 	     ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
         // read system temperature for chs file!!
-        if(settings1->DETECTOR_STATION==2){
-          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
-        }
+
 	cout << "check read temp testbed 2" << endl;
        if (settings1->NOISE_CHANNEL_MODE != 0) {
             ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
         }
+
+        if(settings1->DETECTOR_STATION==2){
+          cout << "Reading variable thresholds for A2"<<endl;
+          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+        }
         // read total elec. chain response file!!
         cout<<"start read elect chain"<<endl;
+
         if(settings1->CUSTOM_ELECTRONICS==0){
             //read the standard ARA electronics
             cout<<"     Reading standard ARA electronics response"<<endl;
@@ -1841,16 +1847,18 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 	    // read threshold values for chs file
 	         ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
             // read system temperature for chs file!!
-            if(settings1->DETECTOR_STATION==2){
-              ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
-            }
 	cout << "check read temp testbed 3" << endl;
             if (settings1->NOISE_CHANNEL_MODE!=0) {
                 ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
             }
+            if(settings1->DETECTOR_STATION==2){
+              cout << "Reading variable thresholds for A2"<<endl;
+              ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+            }
 
             // read total elec. chain response file!!
 	    cout<<"start read elect chain"<<endl;
+
         if(settings1->CUSTOM_ELECTRONICS==0){
             //read the standard ARA electronics
             cout<<"     Reading standard ARA electronics response"<<endl;
@@ -2155,9 +2163,7 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 	      ReadThres_TestBed("./data/thresholds_TB.csv", settings1);// only TestBed for now
 	      // read system temperature for chs file!!
 	      cout << "check read temp testbed 4" << endl;
-        if(settings1->DETECTOR_STATION==2){
-          ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
-        }
+
 	      if (settings1->NOISE_CHANNEL_MODE!=0) {
 		ReadTemp_TestBed("./data/system_temperature.csv", settings1);// only TestBed for now
 	      }
@@ -2208,6 +2214,12 @@ Detector::Detector(Settings *settings1, IceModel *icesurface, string setupfile) 
 
             // read total elec. chain response file!!
 	    cout<<"start read elect chain"<<endl;
+
+      if(settings1->DETECTOR_STATION==2){
+        cout << "Reading variable thresholds for A2"<<endl;
+        ReadThres_A2_A3("./data/thresholds_A2.csv", settings1);
+      }
+
         if(settings1->CUSTOM_ELECTRONICS==0){
             //read the standard ARA electronics
             cout<<"     Reading standard ARA electronics response"<<endl;
@@ -4646,6 +4658,7 @@ inline void Detector::ReadThres_TestBed( string filename, Settings *settings1){
 }
 
 inline void Detector::ReadThres_A2_A3( string filename, Settings *settings1){
+  cout << "Reading threshold for A2/A3"<< endl;
   if (settings1->TRIG_THRES_MODE != 1){
     for (int N=0; N<16; N++) {
       Thres_A2_A3_ch.push_back(settings1->POWERTHRESHOLD);
@@ -5352,7 +5365,9 @@ double Detector::GetThres( int StationID, int ch, Settings *settings1 ){
 
   else if ( settings1->DETECTOR_STATION==2 ) { // if only triggered by bottom chs with TB info
     //    cout << "TBChannel:Threshold: " << ch << " : " << Thres_TB_ch[ch] << endl;
+    //cout << "I'm here" << endl;
     return Thres_A2_A3_ch[ch];
+
   }
 
   else {
@@ -5360,8 +5375,11 @@ double Detector::GetThres( int StationID, int ch, Settings *settings1 ){
   }
 }
 
-double Detector::GetThresfromGaus(double sigma, Settings *settings1){
-  return settings1->POWERTHRESHOLD+abs(gRandom->Gaus(0, sigma));
+double Detector::GetThresfromGaus(Settings *settings1, int channel){
+double hard_thres = GetThres(0, channel,settings1);
+//I'm hardcoding the sigmas here (Jorge, Sept 2019).
+double sigma[16]={0.6,0.8,0.6,0.9,0.6,0.6,0.7,0.7,0.5,0.7,0.6,0.7,0.5,0.7,0.7,0};
+  return hard_thres+abs(gRandom->Gaus(0, sigma[channel]));//gaussian centered at zero
 }
 
 

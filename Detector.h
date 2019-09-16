@@ -393,7 +393,7 @@ class Detector {
 
         double GetThres( int StationID, int ch, Settings *settings1 );  // returns voltage factor threshold for specific channel
 
-        double GetThresfromGaus(double sigma, Settings *settings1);//returns threshold from gaussian distribution of given sigma
+        double GetThresfromGaus(Settings *settings1, int channel);//returns threshold from gaussian distribution of given sigma
 
         double GetTemp( int StationID, int ch, Settings *settings1 );  // returns voltage factor for specific channel gain off set
         vector <double> Temp_TB_ch;   // constant gain offset for the TestBed chs

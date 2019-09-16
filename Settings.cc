@@ -859,17 +859,11 @@ int Settings::CheckCompatibilities(Detector *detector) {
         num_err++;
     }
 
-    if (TRIG_THRES_MODE==1 && DETECTOR!=3 && TRIG_ONLY_LOW_CH_ON!=1) {
+    //  if (TRIG_THRES_MODE==1 && (DETECTOR!=3 || DETECTOR!=4) && (DETECTOR_STATION!=2 || DETECTOR_STATION!=3) ) {
         //cerr<<"TRIG_THRES_MODE=1 and 2 only works with DETECTOR=3!"<<endl;
-        cerr<<"TRIG_THRES_MODE=1 only works with DETECTOR=3 or TRIG_ONLY_LOW_CH_ON=1"<<endl;
-        num_err++;
-    }
-
-    if (TRIG_THRES_MODE==2 && DETECTOR!=3 && TRIG_ONLY_LOW_CH_ON!=1) {
-        //cerr<<"TRIG_THRES_MODE=1 and 2 only works with DETECTOR=3!"<<endl;
-        cerr<<"TRIG_THRES_MODE=2 only works with DETECTOR=3 or TRIG_ONLY_LOW_CH_ON=1"<<endl;
-        num_err++;
-    }
+    //      cerr<<"TRIG_THRES_MODE=1 only works with DETECTOR=3,4 or TRIG_ONLY_LOW_CH_ON=1"<<endl;
+    ///    num_err++;
+    // }
 
     if (USE_MANUAL_GAINOFFSET==1 && DETECTOR!=3) {
         cerr<<"USE_MANUAL_GAINOFFSET=1 only works with DETECTOR=3!"<<endl;
