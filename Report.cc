@@ -2599,13 +2599,10 @@ void Report::Connect_Interaction_Detector (Event *event, Detector *detector, Ray
 		    }
 		  }
 		  else if ( settings1->NOISE_CHANNEL_MODE==1) {
-        double powerthreshold_var=detector->GetThresfromGaus(settings1, channel_num-1);
-		    if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (powerthreshold_var*trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) )  {   // if this channel passed the trigger!
-		      //cout << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1]<<endl;
-		      //cout << "HEREREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!"<<endl;
-
-		      //  cout<<"trigger passed:" << trigger->Full_window[trig_j][trig_i+trig_bin]/trigger->rmsdiode_ch[channel_num-1] <<" ch : "<<trig_j<<endl;
-		      // cout << trigger->rmsdiode_ch[channel_num-1] << endl;
+        //double powerthreshold_var=detector->GetThresfromGaus(settings1, channel_num-1);
+         double powerthreshold_var=settings1->POWERTHRESHOLD;
+        if ( trigger->Full_window[trig_j][trig_i+trig_bin] < (powerthreshold_var*trigger->rmsdiode_ch[channel_num-1] * detector->GetThresOffset( i, channel_num-1,settings1) ) )  {   // if this channel passed the trigger!
+		      // cout << "HEREREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!"<<endl;
 		      stations[i].strings[string_i].antennas[antenna_i].Trig_Pass = trig_i+trig_bin;
 		      N_pass++;
 		      if (detector->stations[i].strings[string_i].antennas[antenna_i].type == 0) { // Vpol
